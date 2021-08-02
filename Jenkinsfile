@@ -14,15 +14,23 @@ pipeline {
 
     stage('compile') {
       steps {
-        sh 'cd spring-boot-package-war'
+        dir("spring-boot-package-war") {
+              sh "pwd"
+            }
+        /*
+        sh 'cd spring-boot-package-war'       
         echo "${env.BUILD_ID}"
-        sh 'mvn compile'
+        sh 'cd spring-boot-package-war && mvn compile' */
+        sh 'mvn compile' 
+        
       }
     }
 
     stage('Test') {
       steps {
-        sh 'cd spring-boot-package-war && mvn test'
+        sh 'mvn test'
+
+        // sh 'cd spring-boot-package-war && mvn test'
       }
     }
 
