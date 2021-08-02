@@ -14,7 +14,9 @@ pipeline {
 
     stage('compile') {
       steps {
-        sh 'cd spring-boot-package-war && mvn compile'
+        sh 'cd spring-boot-package-war'
+        echo "${env.BUILD_ID}"
+        sh 'mvn compile'
       }
     }
 
