@@ -12,5 +12,25 @@ pipeline {
       }
     }
 
+    stage('compile') {
+      steps {
+        sh 'cd spring-boot-package-war && mvn build'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        sh 'mvn test'
+      }
+    }
+
+    stage('Package') {
+      steps {
+        sh ' mvn clean package'
+        cleanWs(cleanWhenSuccess: true)
+        slackSend()
+      }
+    }
+
   }
 }
