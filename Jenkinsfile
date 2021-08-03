@@ -22,7 +22,7 @@ pipeline {
               script {
                 def pomFile = 'pom.xml'
                 def pom = readMavenPom file: pomFile
-                pom.version = "BUILD_${env.BUILD_ID}"
+                pom.version = "0.0.${env.BUILD_ID}-SNAPSHOT"
                 writeMavenPom file: pomFile, model: pom
               }
               sh 'mvn compile' 
