@@ -16,6 +16,10 @@ pipeline {
       steps {
         dir("spring-boot-package-war") {
               echo "${env.BUILD_ID}"
+              def pomFile = 'pom.xml'
+              def pom = readMavenPom file: pomFile
+              pom.version = "BUILD_${env.BUILD_ID}"
+              writeMavenPom file: pomFile, model: pom
               sh 'mvn compile' 
             }
         /*
@@ -35,7 +39,7 @@ pipeline {
     stage('Package') {
       steps {
         sh 'cd spring-boot-package-war &&  mvn clean package'
-        cleanWs(cleanWhenSuccess: true)
+        //cleanWs(cleanWhenSuccess: true)
         slackSend()
       }
     }
