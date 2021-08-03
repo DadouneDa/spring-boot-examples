@@ -8,6 +8,7 @@ pipeline {
   stages {
     stage('Checkout_Code') {
       steps {
+        cleanWs()
         git(url: 'https://github.com/DadouneDa/spring-boot-examples.git', branch: 'david_dadoune_sol', changelog: true, poll: true, credentialsId: 'dd_github')
         slackSend(channel: 'dd_devops', color: '#3EA652', message: "Success: Stage 'Checkout_Code' on job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
 
@@ -43,13 +44,14 @@ pipeline {
     stage('Package') {
       steps {
         dir("spring-boot-package-war") {
-        sh 'cd spring-boot-package-war &&  mvn clean package'
+        sh 'mvn clean package'
         sh 'zip -r package.zip .'
         archiveArtifacts(artifacts: 'package.zip', onlyIfSuccessful: true)
         }
         cleanWs(cleanWhenSuccess: true)
+        slackSend(channel: 'dd_devops', color: '#3EA652', message: "Success: Stage 'Package' on job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         slackSend(channel: 'dd_devops', color: '#3EA652', message: "Success: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-        
+
       }
     }
 
