@@ -16,10 +16,12 @@ pipeline {
       steps {
         dir("spring-boot-package-war") {
               echo "${env.BUILD_ID}"
-              def pomFile = 'pom.xml'
-              def pom = readMavenPom file: pomFile
-              pom.version = "BUILD_${env.BUILD_ID}"
-              writeMavenPom file: pomFile, model: pom
+              script {
+                def pomFile = 'pom.xml'
+                def pom = readMavenPom file: pomFile
+                pom.version = "BUILD_${env.BUILD_ID}"
+                writeMavenPom file: pomFile, model: pom
+              }
               sh 'mvn compile' 
             }
         /*
